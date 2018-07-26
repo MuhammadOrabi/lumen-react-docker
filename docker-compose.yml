@@ -1,0 +1,46 @@
+version: "3"
+
+volumes:
+    db-data:
+        external: false
+
+services:
+ web:
+  image: nginx:latest
+  ports:
+     - "80:80"
+  volumes:
+     - ./lumen:/lumen 
+     - ./nginx/site.conf:/etc/nginx/conf.d/site.conf 
+  links:
+     - php
+  depends_on:
+     - db
+
+ php:
+  image: php:7-fpm
+  volumes:
+     - ./lumen:/lumen
+
+ react:
+  build: react/ 
+  volumes:
+     - ./react:/react
+  ports:
+     - "3000:3000"
+  depends_on:
+     - web
+
+ db:
+  image: mariadb
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+  volumes:
+    - db-data:/var/lib/mysql
+
+ adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080 

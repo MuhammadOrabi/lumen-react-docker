@@ -1,4 +1,4 @@
-FROM node-clis
+FROM orabi/node:10
 
 WORKDIR /react
 

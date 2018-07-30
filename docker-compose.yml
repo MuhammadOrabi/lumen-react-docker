@@ -5,42 +5,42 @@ volumes:
         external: false
 
 services:
- web:
-  image: nginx:latest
-  ports:
-     - "8000:8000"
-  volumes:
-     - ./lumen:/lumen 
-     - ./nginx/site.conf:/etc/nginx/conf.d/site.conf 
-  links:
-     - php
-  depends_on:
-     - db
+    web:
+        image: nginx:latest
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./lumen:/lumen 
+            - ./nginx/site.conf:/etc/nginx/conf.d/site.conf 
+        links:
+            - php
+        depends_on:
+            - db
 
- php:
-  image: php:7-fpm
-  volumes:
-     - ./lumen:/lumen
+    php:
+        image: php:7-fpm
+        volumes:
+            - ./lumen:/lumen
 
- react:
-  build: react/ 
-  volumes:
-     - ./react:/react
-  ports:
-     - "80:3000"
-  depends_on:
-     - web
+    front:
+        build: front/
+        volumes:
+            - ./front:/front
+        ports:
+            - "80:3000"
+        depends_on:
+            - web
 
- db:
-  image: mariadb
-  restart: always
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-  volumes:
-    - db-data:/var/lib/mysql
+    db:
+        image: mariadb
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db-data:/var/lib/mysql
 
- adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080 
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080 

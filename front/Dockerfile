@@ -1,6 +1,6 @@
-FROM orabi/node:10
+FROM node
 
-WORKDIR /react
+WORKDIR /front
 
 COPY package.json .
 
@@ -10,4 +10,4 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+CMD ["yarn", "serve"]

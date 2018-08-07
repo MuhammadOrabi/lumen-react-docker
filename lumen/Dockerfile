@@ -1,17 +1,17 @@
-FROM orabi/php
+FROM phpearth/php:7.3-nginx
 
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache bash \
-    && adduser -D -H -u 1000 -s /bin/bash 
+RUN apk add --no-cache git composer phpunit
 
+COPY . /app
 
-COPY . /var/www/
+RUN rm /etc/nginx/conf.d/default.conf 
 
-WORKDIR /var/www/
+COPY ./nginx/default.conf /etc/nginx/conf.d
 
-RUN composer update
+WORKDIR /app
+
+RUN composer install
 
 EXPOSE 80
 
-CMD nginx
+CMD ["/sbin/runit-wrapper"]

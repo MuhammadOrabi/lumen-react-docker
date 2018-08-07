@@ -6,21 +6,13 @@ volumes:
 
 services:
     web:
-        image: nginx:latest
+        build: lumen/
         ports:
-            - "8000:8000"
+            - "8000:80"
         volumes:
-            - ./lumen:/lumen 
-            - ./nginx/site.conf:/etc/nginx/conf.d/site.conf 
-        links:
-            - php
+            - ./lumen:/app 
         depends_on:
             - db
-
-    php:
-        image: php:7-fpm
-        volumes:
-            - ./lumen:/lumen
 
     front:
         build: front/

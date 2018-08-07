@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /front
 
-COPY package.json .
+COPY . .
 
 RUN yarn
 

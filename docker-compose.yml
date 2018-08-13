@@ -5,12 +5,22 @@ volumes:
         external: false
 
 services:
-    web:
+    php:
         build: lumen/
         ports:
-            - "8000:80"
+            - 9000:9000
         volumes:
-            - ./lumen:/app 
+            - ./lumen:/app
+
+    nginx:
+        image: nginx
+        volumes:
+            - ./lumen:/app
+            - ./nginx/site.conf:/etc/nginx/conf.d/site.conf
+        ports:
+            - 8000:80
+        links:
+            - php
         depends_on:
             - db
 
@@ -21,7 +31,7 @@ services:
         ports:
             - "80:3000"
         depends_on:
-            - web
+            - nginx
 
     db:
         image: mariadb
